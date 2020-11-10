@@ -2,7 +2,7 @@
 /shelf/
 /workspace.xml
 # Datasource local storage ignored files
-/../../../../../../:\Users\carlo\Proyecto Memoria Dinamica\reversi_PMD\.idea/dataSources/
+/../../../../../../../:\Documentos\TERCER SEMESTRE\PROGRA DINAMICA\GIT REVERSI\reversi_PMD\.idea/dataSources/
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
