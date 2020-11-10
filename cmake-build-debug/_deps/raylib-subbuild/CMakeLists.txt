@@ -12,8 +12,8 @@ project(raylib-populate NONE)
 include(ExternalProject)
 ExternalProject_Add(raylib-populate
                      "UPDATE_DISCONNECTED" "False" "URL" "https://github.com/raysan5/raylib/archive/master.tar.gz"
-                    SOURCE_DIR          "D:/Documentos/TERCER SEMESTRE/PROGRA DINAMICA/GIT REVERSI/reversi_PMD/cmake-build-debug/_deps/raylib-src"
-                    BINARY_DIR          "D:/Documentos/TERCER SEMESTRE/PROGRA DINAMICA/GIT REVERSI/reversi_PMD/cmake-build-debug/_deps/raylib-build"
+                    SOURCE_DIR          "C:/Users/carlo/Proyecto Memoria Dinamica/reversi_PMD/cmake-build-debug/_deps/raylib-src"
+                    BINARY_DIR          "C:/Users/carlo/Proyecto Memoria Dinamica/reversi_PMD/cmake-build-debug/_deps/raylib-build"
                     CONFIGURE_COMMAND   ""
                     BUILD_COMMAND       ""
                     INSTALL_COMMAND     ""
