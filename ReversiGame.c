@@ -5,21 +5,35 @@
 struct GameState{
     char tablero[size][size];
     int turno;
+    char JugadorActual;
+    char Oponente;
 };
-
 typedef  struct GameState GAME;
+struct coord{
+    int x;
+    int y;
+};
+typedef struct coord COORD;
 
 GAME IniciarTablero();
 void MostrarTablero(GAME Juego);
-void Movimientos(GAME *Juego);
+void EscogerTurnoJugador(GAME *Juego);
+int MovimientosDisponibles(GAME *Juego);
+void RealizarMovimiento(GAME *Juego);
+COORD ObtenerCoordenadas(GAME Juego);
+void LimpiarTablero(GAME * Juego);
 
 
 int main(){
     GAME juego = IniciarTablero();
     MostrarTablero(juego);
-    Movimientos(&juego);
+    MovimientosDisponibles(&juego);
     printf("\n");
     MostrarTablero(juego);
+    RealizarMovimiento(&juego);
+    LimpiarTablero(&juego);
+    MostrarTablero(juego);
+    MovimientosDisponibles(&juego);
 
     return 0;
 }
@@ -53,16 +67,9 @@ void MostrarTablero(GAME Juego) {
     }
 }
 
-void Movimientos(GAME *Juego) {
-    char JugadorActual, Oponente;
-    if (Juego->turno % 2 != 0) {
-        JugadorActual = 'B';
-        Oponente = 'W';
-    }
-    else {
-        JugadorActual = 'W';
-        Oponente = 'B';
-    }
+int MovimientosDisponibles(GAME *Juego) {
+    int CasillasDisponibles;
+    EscogerTurnoJugador(Juego);
     for (int y = 0; y < size; ++y) {
         for (int x = 0; x < size; ++x) {
             if (Juego->tablero[y][x] != '0') {
@@ -75,7 +82,7 @@ void Movimientos(GAME *Juego) {
                         || (AdyacentesEnY == 0 && AdyacentesEnX == 0)) {
                         continue;
                     }
-                    if (Juego->tablero[y + AdyacentesEnY][x + AdyacentesEnX] == Oponente) {
+                    if (Juego->tablero[y + AdyacentesEnY][x + AdyacentesEnX] == Juego->Oponente) {
                         int MovimientoEnX = x + AdyacentesEnX;
                         int MovimientoEnY = y + AdyacentesEnY;
                         while (1) {
@@ -88,8 +95,9 @@ void Movimientos(GAME *Juego) {
                                 MovimientoEnY >= size) {
                                 break;
                             }
-                            if (Juego->tablero[MovimientoEnY][MovimientoEnX] == JugadorActual) {
+                            if (Juego->tablero[MovimientoEnY][MovimientoEnX] == Juego->JugadorActual) {
                                 Juego->tablero[y][x] = 'A';
+                                CasillasDisponibles++;
                                 break;
                             }
                         }
@@ -98,4 +106,89 @@ void Movimientos(GAME *Juego) {
             }
         }
     }
+    return CasillasDisponibles;
+}
+
+void RealizarMovimiento(GAME *Juego) {
+    int x = 4, y = 4;
+    EscogerTurnoJugador(Juego);
+    if (MovimientosDisponibles(Juego)){
+        COORD coordenadas = ObtenerCoordenadas(*Juego);
+        Juego->tablero[coordenadas.y][coordenadas.x] = Juego->JugadorActual;
+        Juego->turno++;
+        for (int AdyacentesEnY = -1; AdyacentesEnY < 2; AdyacentesEnY++){
+            for(int  AdyacentesEnX = -1; AdyacentesEnX < 2; AdyacentesEnX++){
+                if (y + AdyacentesEnY < 0 || y + AdyacentesEnY == size || x + AdyacentesEnX < 0
+                    || x + AdyacentesEnX == size || (AdyacentesEnX == 0 && AdyacentesEnY == 0)){
+                    continue;
+                }
+                if (Juego->tablero[y +AdyacentesEnY][x + AdyacentesEnX] == Juego->Oponente){
+                    int MovimientoEnX = x + AdyacentesEnX;
+                    int MovimientoEnY = y + AdyacentesEnY;
+                    while (1){
+                        MovimientoEnY += AdyacentesEnY;
+                        MovimientoEnX += AdyacentesEnX;
+                        if (Juego->tablero[MovimientoEnY][MovimientoEnX] == '0'){
+                            break;
+                        }
+                        if (MovimientoEnX < 0 || MovimientoEnX == size || MovimientoEnY < 0 || MovimientoEnY == size){
+                            break;
+                        }
+                        if (Juego->tablero[MovimientoEnY][MovimientoEnX] == Juego->JugadorActual){
+                            while (x != MovimientoEnX || y != MovimientoEnY){
+                                x += AdyacentesEnX;
+                                y += AdyacentesEnY;
+                                Juego->tablero[y][x] = Juego->JugadorActual;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else{
+        printf("\nNo hay jugadas disponibles\n");
+        Juego->turno++;
+    }
+}
+
+void LimpiarTablero(GAME * Juego){
+    for (int y = 0; y < size; ++y) {
+        for (int x = 0; x < size; x++) {
+            if (Juego->tablero[y][x] == 'A'){
+                Juego->tablero[y][x] = '0';
+            }
+        }
+    }
+}
+
+void EscogerTurnoJugador(GAME *Juego){
+    if (Juego->turno % 2 != 0) {
+        Juego->JugadorActual = 'B';
+        Juego->Oponente = 'W';
+    }
+    else {
+        Juego->JugadorActual = 'W';
+        Juego->Oponente = 'B';
+    }
+}
+
+COORD ObtenerCoordenadas(GAME Juego){
+    COORD coordenada;
+    int x, y;
+    while(1) {
+        while (1) {
+            printf("\nIngrese cordenadas de una jugada posible x, y\n");
+            scanf("%d, %d", &x, &y);
+            if (x > 0 && x < size && y > 0 && y < size) {
+                break;
+            }
+        }
+        if (Juego.tablero[y][x] == 'A') {
+            break;
+        }
+    }
+    coordenada.x = x;
+    coordenada.y = y;
+    return coordenada;
 }
