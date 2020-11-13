@@ -25,16 +25,29 @@ void LimpiarTablero(GAME * Juego);
 
 
 int main(){
-    GAME juego = IniciarTablero();
-    MostrarTablero(juego);
-    MovimientosDisponibles(&juego);
-    printf("\n");
-    MostrarTablero(juego);
-    RealizarMovimiento(&juego);
-    LimpiarTablero(&juego);
-    MostrarTablero(juego);
-    MovimientosDisponibles(&juego);
+    char opcion = 0;
+    setbuf(stdin, NULL);
+    setbuf(stdout,NULL);
 
+    printf("\ncomenzar juego\nPRESS ENTER\n");
+    scanf("%c",&opcion);
+    GAME juego = IniciarTablero();
+
+    do {
+
+
+        do {
+            MostrarTablero(juego);
+            MovimientosDisponibles(&juego);
+            printf("\n");
+            MostrarTablero(juego);
+            RealizarMovimiento(&juego);
+            LimpiarTablero(&juego);
+        }while (MovimientosDisponibles(&juego));
+
+        printf("volver a jugar?\n");
+        scanf("%c", &opcion);
+    }while(opcion == 's');
     return 0;
 }
 
@@ -128,13 +141,16 @@ void RealizarMovimiento(GAME *Juego) {
                     while (1){
                         MovimientoEnY += AdyacentesEnY;
                         MovimientoEnX += AdyacentesEnX;
+                        if (MovimientoEnX < 0 || MovimientoEnX >= size || MovimientoEnY < 0 || MovimientoEnY >= size){
+                            break;
+                        }
                         if (Juego->tablero[MovimientoEnY][MovimientoEnX] == '0'){
                             break;
                         }
-                        if (MovimientoEnX < 0 || MovimientoEnX == size || MovimientoEnY < 0 || MovimientoEnY == size){
-                            break;
-                        }
                         if (Juego->tablero[MovimientoEnY][MovimientoEnX] == Juego->JugadorActual){
+                            //quiza aqui esta el error ---------------------------------------------------------------------------------------------------------------------
+                            //creo que falta implementar que se cambie el valor si esta entre dos---------------------------------------------------------------------------
+                            
                             while (x != MovimientoEnX || y != MovimientoEnY){
                                 x += AdyacentesEnX;
                                 y += AdyacentesEnY;
