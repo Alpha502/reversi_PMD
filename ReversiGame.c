@@ -22,6 +22,7 @@ int MovimientosDisponibles(GAME *Juego);
 void RealizarMovimiento(GAME *Juego);
 COORD ObtenerCoordenadas(GAME Juego);
 void LimpiarTablero(GAME * Juego);
+int EndGame(GAME Juego);
 
 
 int main(){
@@ -43,7 +44,7 @@ int main(){
             MostrarTablero(juego);
             RealizarMovimiento(&juego);
             LimpiarTablero(&juego);
-        }while (MovimientosDisponibles(&juego));
+        }while (EndGame(juego));
 
         printf("volver a jugar?\n");
         scanf("%c", &opcion);
@@ -123,7 +124,6 @@ int MovimientosDisponibles(GAME *Juego) {
 }
 
 void RealizarMovimiento(GAME *Juego) {
-    int x = 4, y = 4;
     EscogerTurnoJugador(Juego);
     if (MovimientosDisponibles(Juego)){
         COORD coordenadas = ObtenerCoordenadas(*Juego);
@@ -131,13 +131,13 @@ void RealizarMovimiento(GAME *Juego) {
         Juego->turno++;
         for (int AdyacentesEnY = -1; AdyacentesEnY < 2; AdyacentesEnY++){
             for(int  AdyacentesEnX = -1; AdyacentesEnX < 2; AdyacentesEnX++){
-                if (y + AdyacentesEnY < 0 || y + AdyacentesEnY == size || x + AdyacentesEnX < 0
-                    || x + AdyacentesEnX == size || (AdyacentesEnX == 0 && AdyacentesEnY == 0)){
+                if (coordenadas.y + AdyacentesEnY < 0 || coordenadas.y + AdyacentesEnY == size || coordenadas.x + AdyacentesEnX < 0
+                    || coordenadas.x + AdyacentesEnX == size || (AdyacentesEnX == 0 && AdyacentesEnY == 0)){
                     continue;
                 }
-                if (Juego->tablero[y +AdyacentesEnY][x + AdyacentesEnX] == Juego->Oponente){
-                    int MovimientoEnX = x + AdyacentesEnX;
-                    int MovimientoEnY = y + AdyacentesEnY;
+                if (Juego->tablero[coordenadas.y +AdyacentesEnY][coordenadas.x + AdyacentesEnX] == Juego->Oponente){
+                    int MovimientoEnX = coordenadas.x + AdyacentesEnX;
+                    int MovimientoEnY = coordenadas.y + AdyacentesEnY;
                     while (1){
                         MovimientoEnY += AdyacentesEnY;
                         MovimientoEnX += AdyacentesEnX;
@@ -150,11 +150,11 @@ void RealizarMovimiento(GAME *Juego) {
                         if (Juego->tablero[MovimientoEnY][MovimientoEnX] == Juego->JugadorActual){
                             //quiza aqui esta el error ---------------------------------------------------------------------------------------------------------------------
                             //creo que falta implementar que se cambie el valor si esta entre dos---------------------------------------------------------------------------
-                            
-                            while (x != MovimientoEnX || y != MovimientoEnY){
-                                x += AdyacentesEnX;
-                                y += AdyacentesEnY;
-                                Juego->tablero[y][x] = Juego->JugadorActual;
+
+                            while (coordenadas.x != MovimientoEnX || coordenadas.y != MovimientoEnY){
+                                coordenadas.x += AdyacentesEnX;
+                                coordenadas.y += AdyacentesEnY;
+                                Juego->tablero[coordenadas.y][coordenadas.x] = Juego->JugadorActual;
                             }
                         }
                     }
@@ -207,4 +207,19 @@ COORD ObtenerCoordenadas(GAME Juego){
     coordenada.x = x;
     coordenada.y = y;
     return coordenada;
+}
+
+int EndGame(GAME Juego){
+    int CasillasLibres = 0;
+    for (int y = 0; y < size; y++){
+        for (int x = 0; x < size; x++){
+            if(Juego.tablero[y][x] == '0'){
+                CasillasLibres++;
+            }
+        }
+    }
+    int JugadasTurnoActual = MovimientosDisponibles(&Juego);
+    Juego.turno++;
+    int  JugadasTurnoSiguiente = MovimientosDisponibles(&Juego);
+    return (CasillasLibres && (JugadasTurnoActual || JugadasTurnoSiguiente));
 }
