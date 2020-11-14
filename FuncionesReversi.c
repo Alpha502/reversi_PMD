@@ -17,6 +17,12 @@ GAME IniciarTablero(){
 }
 
 void MostrarTablero(GAME Juego) {
+    int numero_fila =0;
+    int numero_col = 0;
+    for (int columna = 0; columna < size; columna++) {
+        printf("  %d  ",numero_col+columna);
+    }
+    printf("\n");
     for (int fila = 0; fila < size; fila++) {
         for (int columna = 0; columna < size; columna++) {
             if (Juego.tablero[fila][columna] == '0') {
@@ -25,6 +31,7 @@ void MostrarTablero(GAME Juego) {
                 printf("| %c |", Juego.tablero[fila][columna]);
             }
         }
+        printf("%d", numero_fila + fila);
         printf("\n");
     }
 }
@@ -140,11 +147,14 @@ void EscogerTurnoJugador(GAME *Juego){
 COORD ObtenerCoordenadas(GAME Juego){
     COORD coordenada;
     int x, y;
+    printf("\n");
+    printf("Es el turno de: %c", Juego.JugadorActual);
+    printf("\n");
     while(1) {
         while (1) {
             printf("\nIngrese cordenadas de una jugada posible x, y\n");
             scanf("%d, %d", &x, &y);
-            if (x > 0 && x < size && y > 0 && y < size) {
+            if (x >= 0 && x < size && y >= 0 && y < size) {
                 break;
             }
         }

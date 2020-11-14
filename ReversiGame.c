@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "FuncionesReversi.h>
+#include "FuncionesReversi.c"
 
 #define size 8
 
