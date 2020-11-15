@@ -34,6 +34,9 @@ void MostrarTablero(GAME Juego) {
         printf("%d", numero_fila + fila);
         printf("\n");
     }
+    COORD puntos = Puntos(Juego);
+    printf("El jugador B tiene: %d Puntos\n", puntos.x);
+    printf("El jugador W tiene: %d Puntos\n", puntos.y);
 }
 
 int MovimientosDisponibles(GAME *Juego) {
@@ -46,8 +49,8 @@ int MovimientosDisponibles(GAME *Juego) {
             }
             for (int AdyacentesEnY = -1; AdyacentesEnY < 2; ++AdyacentesEnY) {
                 for (int AdyacentesEnX = -1; AdyacentesEnX < 2; ++AdyacentesEnX) {
-                    if (y + AdyacentesEnY < 0 || y + AdyacentesEnY == size || x + AdyacentesEnX < 0 ||
-                        x + AdyacentesEnX == size
+                    if ((y + AdyacentesEnY) < 0 || (y + AdyacentesEnY) == size || (x + AdyacentesEnX) < 0 ||
+                        (x + AdyacentesEnX) == size
                         || (AdyacentesEnY == 0 && AdyacentesEnX == 0)) {
                         continue;
                     }
@@ -84,18 +87,19 @@ void RealizarMovimiento(GAME *Juego) {
         COORD coordenadas = ObtenerCoordenadas(*Juego);
         Juego->tablero[coordenadas.y][coordenadas.x] = Juego->JugadorActual;
         Juego->turno++;
-        for (int AdyacentesEnY = -1; AdyacentesEnY < 2; AdyacentesEnY++){
-            for(int  AdyacentesEnX = -1; AdyacentesEnX < 2; AdyacentesEnX++){
+        for (int AdyacentesEnY = -1; AdyacentesEnY <= 1; AdyacentesEnY++){
+            for(int  AdyacentesEnX = -1; AdyacentesEnX <= 1; AdyacentesEnX++){
                 if (coordenadas.y + AdyacentesEnY < 0 || coordenadas.y + AdyacentesEnY == size || coordenadas.x + AdyacentesEnX < 0
                     || coordenadas.x + AdyacentesEnX == size || (AdyacentesEnX == 0 && AdyacentesEnY == 0)){
                     continue;
                 }
-                if (Juego->tablero[coordenadas.y +AdyacentesEnY][coordenadas.x + AdyacentesEnX] == Juego->Oponente){
-                    int MovimientoEnX = coordenadas.x + AdyacentesEnX;
-                    int MovimientoEnY = coordenadas.y + AdyacentesEnY;
+                if (Juego->tablero[coordenadas.y + AdyacentesEnY][coordenadas.x + AdyacentesEnX] == Juego->Oponente){
+                    int MovimientoEnX = coordenadas.x;
+                    int MovimientoEnY = coordenadas.y;
                     while (1){
                         MovimientoEnY += AdyacentesEnY;
                         MovimientoEnX += AdyacentesEnX;
+                        printf("MovimientoEnX = %d , MovimientoEnY = %d \n", MovimientoEnX, MovimientoEnY);
                         if (MovimientoEnX < 0 || MovimientoEnX >= size || MovimientoEnY < 0 || MovimientoEnY >= size){
                             break;
                         }
@@ -106,11 +110,10 @@ void RealizarMovimiento(GAME *Juego) {
                             //quiza aqui esta el error ---------------------------------------------------------------------------------------------------------------------
                             //creo que falta implementar que se cambie el valor si esta entre dos---------------------------------------------------------------------------
 
-                            while (coordenadas.x != MovimientoEnX || coordenadas.y != MovimientoEnY){
-                                coordenadas.x += AdyacentesEnX;
-                                coordenadas.y += AdyacentesEnY;
-                                Juego->tablero[coordenadas.y][coordenadas.x] = Juego->JugadorActual;
+                            while (Juego->tablero[MovimientoEnY -= AdyacentesEnY][MovimientoEnX -= AdyacentesEnX] == Juego->Oponente){
+                                Juego->tablero[MovimientoEnY][MovimientoEnX] = Juego->JugadorActual;
                             }
+                            break;
                         }
                     }
                 }
@@ -180,4 +183,23 @@ int EndGame(GAME Juego){
     Juego.turno++;
     int  JugadasTurnoSiguiente = MovimientosDisponibles(&Juego);
     return (CasillasLibres && (JugadasTurnoActual || JugadasTurnoSiguiente));
+}
+
+COORD Puntos(GAME Juego){
+    COORD Puntos;
+    int CantidadB = 0;
+    int CantidadW = 0;
+    for(int y = 0; y < size; y++){
+        for(int x = 0; x < size; x++){
+            if(Juego.tablero[y][x] == 'W'){
+                CantidadW++;
+            }
+            if(Juego.tablero[y][x] == 'B'){
+                CantidadB++;
+            }
+        }
+    }
+    Puntos.x = CantidadB;
+    Puntos.y = CantidadW;
+    return Puntos;
 }

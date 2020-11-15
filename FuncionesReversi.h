@@ -27,5 +27,6 @@ void RealizarMovimiento(GAME *Juego);
 COORD ObtenerCoordenadas(GAME Juego);
 void LimpiarTablero(GAME * Juego);
 int EndGame(GAME Juego);
+COORD Puntos(GAME Juego);
 
 #endif /* FUNCIONESREVERSI_H_ */
