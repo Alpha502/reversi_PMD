@@ -34,9 +34,6 @@ void MostrarTablero(GAME Juego) {
         printf("%d", numero_fila + fila);
         printf("\n");
     }
-    COORD puntos = Puntos(Juego);
-    printf("El jugador B tiene: %d Puntos\n", puntos.x);
-    printf("El jugador W tiene: %d Puntos\n", puntos.y);
 }
 
 int MovimientosDisponibles(GAME *Juego) {
@@ -99,7 +96,7 @@ void RealizarMovimiento(GAME *Juego) {
                     while (1){
                         MovimientoEnY += AdyacentesEnY;
                         MovimientoEnX += AdyacentesEnX;
-                        printf("MovimientoEnX = %d , MovimientoEnY = %d \n", MovimientoEnX, MovimientoEnY);
+                        //printf("MovimientoEnX = %d , MovimientoEnY = %d \n", MovimientoEnX, MovimientoEnY);
                         if (MovimientoEnX < 0 || MovimientoEnX >= size || MovimientoEnY < 0 || MovimientoEnY >= size){
                             break;
                         }
@@ -150,6 +147,9 @@ void EscogerTurnoJugador(GAME *Juego){
 COORD ObtenerCoordenadas(GAME Juego){
     COORD coordenada;
     int x, y;
+    COORD puntos = Puntos(Juego);
+    printf("El jugador B tiene: %d Puntos\n", puntos.x);
+    printf("El jugador W tiene: %d Puntos\n", puntos.y);
     printf("\n");
     printf("Es el turno de: %c", Juego.JugadorActual);
     printf("\n");
