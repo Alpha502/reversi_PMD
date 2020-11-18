@@ -1,0 +1,3 @@
+C:/Users/carlo/CLionProjects/Reversi/cmake-build-debug/CMakeFiles/Reversi.dir
+C:/Users/carlo/CLionProjects/Reversi/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/carlo/CLionProjects/Reversi/cmake-build-debug/CMakeFiles/rebuild_cache.dir

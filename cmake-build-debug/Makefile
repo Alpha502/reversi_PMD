@@ -58,73 +58,27 @@ cmake_force:
 SHELL = cmd.exe
 
 # The CMake executable.
-CMAKE_COMMAND = "D:\Aplicaciones\CLION\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe"
+CMAKE_COMMAND = "C:\Program Files\JetBrains\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe"
 
 # The command to remove a file.
-RM = "D:\Aplicaciones\CLION\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" -E rm -f
+RM = "C:\Program Files\JetBrains\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "D:\Documentos\TERCER SEMESTRE\PROGRA DINAMICA\GIT REVERSI\reversi_PMD"
+CMAKE_SOURCE_DIR = C:\Users\carlo\CLionProjects\Reversi
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "D:\Documentos\TERCER SEMESTRE\PROGRA DINAMICA\GIT REVERSI\reversi_PMD\cmake-build-debug"
+CMAKE_BINARY_DIR = C:\Users\carlo\CLionProjects\Reversi\cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target package
-package: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool..."
-	"D:\Aplicaciones\CLION\CLion 2020.2.4\bin\cmake\win\bin\cpack.exe" --config ./CPackConfig.cmake
-.PHONY : package
-
-# Special rule for the target package
-package/fast: package
-
-.PHONY : package/fast
-
-# Special rule for the target package_source
-package_source:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool for source..."
-	"D:\Aplicaciones\CLION\CLion 2020.2.4\bin\cmake\win\bin\cpack.exe" --config ./CPackSourceConfig.cmake "D:/Documentos/TERCER SEMESTRE/PROGRA DINAMICA/GIT REVERSI/reversi_PMD/cmake-build-debug/CPackSourceConfig.cmake"
-.PHONY : package_source
-
-# Special rule for the target package_source
-package_source/fast: package_source
-
-.PHONY : package_source/fast
-
-# Special rule for the target install
-install: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	"D:\Aplicaciones\CLION\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" -P cmake_install.cmake
-.PHONY : install
-
-# Special rule for the target install
-install/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	"D:\Aplicaciones\CLION\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" -P cmake_install.cmake
-.PHONY : install/fast
-
-# Special rule for the target install/local
-install/local: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	"D:\Aplicaciones\CLION\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local
-
-# Special rule for the target install/local
-install/local/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	"D:\Aplicaciones\CLION\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	"D:\Aplicaciones\CLION\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" -E echo "No interactive CMake dialog available."
+	"C:\Program Files\JetBrains\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" -E echo "No interactive CMake dialog available."
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -135,7 +89,7 @@ edit_cache/fast: edit_cache
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	"D:\Aplicaciones\CLION\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	"C:\Program Files\JetBrains\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -143,33 +97,11 @@ rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
 
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
-.PHONY : list_install_components
-
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
-
-.PHONY : list_install_components/fast
-
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	"D:\Aplicaciones\CLION\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
-
-# Special rule for the target install/strip
-install/strip/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	"D:\Aplicaciones\CLION\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip/fast
-
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "D:\Documentos\TERCER SEMESTRE\PROGRA DINAMICA\GIT REVERSI\reversi_PMD\cmake-build-debug\CMakeFiles" "D:\Documentos\TERCER SEMESTRE\PROGRA DINAMICA\GIT REVERSI\reversi_PMD\cmake-build-debug\CMakeFiles\progress.marks"
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\carlo\CLionProjects\Reversi\cmake-build-debug\CMakeFiles C:\Users\carlo\CLionProjects\Reversi\cmake-build-debug\CMakeFiles\progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start "D:\Documentos\TERCER SEMESTRE\PROGRA DINAMICA\GIT REVERSI\reversi_PMD\cmake-build-debug\CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\carlo\CLionProjects\Reversi\cmake-build-debug\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -198,56 +130,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named reversi_PMD
+# Target rules for targets named Reversi
 
 # Build rule for target.
-reversi_PMD: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 reversi_PMD
-.PHONY : reversi_PMD
+Reversi: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 Reversi
+.PHONY : Reversi
 
 # fast build rule for target.
-reversi_PMD/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\reversi_PMD.dir\build.make CMakeFiles/reversi_PMD.dir/build
-.PHONY : reversi_PMD/fast
+Reversi/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Reversi.dir\build.make CMakeFiles/Reversi.dir/build
+.PHONY : Reversi/fast
 
-#=============================================================================
-# Target rules for targets named raylib_static
+FuncionesReversi.obj: FuncionesReversi.c.obj
 
-# Build rule for target.
-raylib_static: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 raylib_static
-.PHONY : raylib_static
+.PHONY : FuncionesReversi.obj
 
-# fast build rule for target.
-raylib_static/fast:
-	$(MAKE) $(MAKESILENT) -f _deps\raylib-build\src\CMakeFiles\raylib_static.dir\build.make _deps/raylib-build/src/CMakeFiles/raylib_static.dir/build
-.PHONY : raylib_static/fast
+# target to build an object file
+FuncionesReversi.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Reversi.dir\build.make CMakeFiles/Reversi.dir/FuncionesReversi.c.obj
+.PHONY : FuncionesReversi.c.obj
 
-#=============================================================================
-# Target rules for targets named glfw_objlib
+FuncionesReversi.i: FuncionesReversi.c.i
 
-# Build rule for target.
-glfw_objlib: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 glfw_objlib
-.PHONY : glfw_objlib
+.PHONY : FuncionesReversi.i
 
-# fast build rule for target.
-glfw_objlib/fast:
-	$(MAKE) $(MAKESILENT) -f _deps\raylib-build\src\external\glfw\src\CMakeFiles\glfw_objlib.dir\build.make _deps/raylib-build/src/external/glfw/src/CMakeFiles/glfw_objlib.dir/build
-.PHONY : glfw_objlib/fast
+# target to preprocess a source file
+FuncionesReversi.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Reversi.dir\build.make CMakeFiles/Reversi.dir/FuncionesReversi.c.i
+.PHONY : FuncionesReversi.c.i
 
-#=============================================================================
-# Target rules for targets named glfw
+FuncionesReversi.s: FuncionesReversi.c.s
 
-# Build rule for target.
-glfw: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 glfw
-.PHONY : glfw
+.PHONY : FuncionesReversi.s
 
-# fast build rule for target.
-glfw/fast:
-	$(MAKE) $(MAKESILENT) -f _deps\raylib-build\src\external\glfw\src\CMakeFiles\glfw.dir\build.make _deps/raylib-build/src/external/glfw/src/CMakeFiles/glfw.dir/build
-.PHONY : glfw/fast
+# target to generate assembly for a file
+FuncionesReversi.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Reversi.dir\build.make CMakeFiles/Reversi.dir/FuncionesReversi.c.s
+.PHONY : FuncionesReversi.c.s
 
 main.obj: main.c.obj
 
@@ -255,7 +175,7 @@ main.obj: main.c.obj
 
 # target to build an object file
 main.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\reversi_PMD.dir\build.make CMakeFiles/reversi_PMD.dir/main.c.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Reversi.dir\build.make CMakeFiles/Reversi.dir/main.c.obj
 .PHONY : main.c.obj
 
 main.i: main.c.i
@@ -264,7 +184,7 @@ main.i: main.c.i
 
 # target to preprocess a source file
 main.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\reversi_PMD.dir\build.make CMakeFiles/reversi_PMD.dir/main.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Reversi.dir\build.make CMakeFiles/Reversi.dir/main.c.i
 .PHONY : main.c.i
 
 main.s: main.c.s
@@ -273,7 +193,7 @@ main.s: main.c.s
 
 # target to generate assembly for a file
 main.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\reversi_PMD.dir\build.make CMakeFiles/reversi_PMD.dir/main.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Reversi.dir\build.make CMakeFiles/Reversi.dir/main.c.s
 .PHONY : main.c.s
 
 # Help Target
@@ -283,17 +203,11 @@ help:
 	@echo ... clean
 	@echo ... depend
 	@echo ... edit_cache
-	@echo ... install
-	@echo ... install/local
-	@echo ... install/strip
-	@echo ... list_install_components
-	@echo ... package
-	@echo ... package_source
 	@echo ... rebuild_cache
-	@echo ... glfw
-	@echo ... glfw_objlib
-	@echo ... raylib_static
-	@echo ... reversi_PMD
+	@echo ... Reversi
+	@echo ... FuncionesReversi.obj
+	@echo ... FuncionesReversi.i
+	@echo ... FuncionesReversi.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

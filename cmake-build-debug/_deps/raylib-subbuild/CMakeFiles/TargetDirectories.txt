@@ -1,3 +1,0 @@
-D:/Documentos/TERCER SEMESTRE/PROGRA DINAMICA/GIT REVERSI/reversi_PMD/cmake-build-debug/_deps/raylib-subbuild/CMakeFiles/raylib-populate.dir
-D:/Documentos/TERCER SEMESTRE/PROGRA DINAMICA/GIT REVERSI/reversi_PMD/cmake-build-debug/_deps/raylib-subbuild/CMakeFiles/edit_cache.dir
-D:/Documentos/TERCER SEMESTRE/PROGRA DINAMICA/GIT REVERSI/reversi_PMD/cmake-build-debug/_deps/raylib-subbuild/CMakeFiles/rebuild_cache.dir
