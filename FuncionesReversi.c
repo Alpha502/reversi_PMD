@@ -1,7 +1,13 @@
 #include"FuncionesReversi.h"
+#include <stdlib.h>
+#include <stdio.h>
 
-GAME IniciarTablero(){
+GAME IniciarTablero(int size){
     GAME juego;
+    juego.tablero=malloc(size * sizeof(char*));
+    for (int i = 0; i < size; ++i) {
+        juego.tablero[i] = malloc(size* sizeof(char));
+    }
     for (int y = 0; y < size; ++y) {
         for (int x = 0; x < size; ++x) {
             juego.tablero[y][x] = '0';
@@ -16,11 +22,16 @@ GAME IniciarTablero(){
     return juego;
 }
 
-void MostrarTablero(GAME Juego) {
+void MostrarTablero(GAME Juego,int size) {
     int numero_fila =0;
     int numero_col = 0;
     for (int columna = 0; columna < size; columna++) {
-        printf("  %d  ",numero_col+columna);
+        if (columna>=10){
+            printf(" %d  ",numero_col+columna);
+        }else if (columna>=100){
+            printf("%d  ",numero_col+columna);
+        }else
+            printf("  %d  ",numero_col+columna);
     }
     printf("\n");
     for (int fila = 0; fila < size; fila++) {
@@ -36,7 +47,7 @@ void MostrarTablero(GAME Juego) {
     }
 }
 
-int MovimientosDisponibles(GAME *Juego) {
+int MovimientosDisponibles(GAME *Juego,int size) {
     int CasillasDisponibles;
     EscogerTurnoJugador(Juego);
     for (int y = 0; y < size; ++y) {
@@ -78,10 +89,10 @@ int MovimientosDisponibles(GAME *Juego) {
     return CasillasDisponibles;
 }
 
-void RealizarMovimiento(GAME *Juego) {
+void RealizarMovimiento(GAME *Juego,int size) {
     EscogerTurnoJugador(Juego);
-    if (MovimientosDisponibles(Juego)){
-        COORD coordenadas = ObtenerCoordenadas(*Juego);
+    if (MovimientosDisponibles(Juego,size)){
+        COORD coordenadas = ObtenerCoordenadas(*Juego,size);
         Juego->tablero[coordenadas.y][coordenadas.x] = Juego->JugadorActual;
         Juego->turno++;
         for (int AdyacentesEnY = -1; AdyacentesEnY <= 1; AdyacentesEnY++){
@@ -123,7 +134,7 @@ void RealizarMovimiento(GAME *Juego) {
     }
 }
 
-void LimpiarTablero(GAME * Juego){
+void LimpiarTablero(GAME * Juego,int size){
     for (int y = 0; y < size; ++y) {
         for (int x = 0; x < size; x++) {
             if (Juego->tablero[y][x] == 'A'){
@@ -144,10 +155,10 @@ void EscogerTurnoJugador(GAME *Juego){
     }
 }
 
-COORD ObtenerCoordenadas(GAME Juego){
+COORD ObtenerCoordenadas(GAME Juego,int size){
     COORD coordenada;
     int x, y;
-    COORD puntos = Puntos(Juego);
+    COORD puntos = Puntos(Juego,size);
     printf("El jugador B tiene: %d Puntos\n", puntos.x);
     printf("El jugador W tiene: %d Puntos\n", puntos.y);
     printf("\n");
@@ -170,7 +181,7 @@ COORD ObtenerCoordenadas(GAME Juego){
     return coordenada;
 }
 
-int EndGame(GAME Juego){
+int EndGame(GAME Juego,int size){
     int CasillasLibres = 0;
     for (int y = 0; y < size; y++){
         for (int x = 0; x < size; x++){
@@ -179,13 +190,13 @@ int EndGame(GAME Juego){
             }
         }
     }
-    int JugadasTurnoActual = MovimientosDisponibles(&Juego);
+    int JugadasTurnoActual = MovimientosDisponibles(&Juego,size);
     Juego.turno++;
-    int  JugadasTurnoSiguiente = MovimientosDisponibles(&Juego);
+    int  JugadasTurnoSiguiente = MovimientosDisponibles(&Juego,size);
     return (CasillasLibres && (JugadasTurnoActual || JugadasTurnoSiguiente));
 }
 
-COORD Puntos(GAME Juego){
+COORD Puntos(GAME Juego,int size){
     COORD Puntos;
     int CantidadB = 0;
     int CantidadW = 0;

@@ -1,12 +1,12 @@
 #include <stdio.h>
-#define size 8
+#include <stdlib.h>
 
 #ifndef FUNCIONESREVERSI_H_
 #define FUNCIONESREVERSI_H_
 
 
 struct GameState{
-    char tablero[size][size];
+    char** tablero;
     int turno;
     char JugadorActual;
     char Oponente;
@@ -18,14 +18,14 @@ struct coord{
 };
 typedef struct coord COORD;
 
-GAME IniciarTablero();
-void MostrarTablero(GAME Juego);
+GAME IniciarTablero(int size);
+void MostrarTablero(GAME Juego, int size);
 void EscogerTurnoJugador(GAME *Juego);
-int MovimientosDisponibles(GAME *Juego);
-void RealizarMovimiento(GAME *Juego);
-COORD ObtenerCoordenadas(GAME Juego);
-void LimpiarTablero(GAME * Juego);
-int EndGame(GAME Juego);
-COORD Puntos(GAME Juego);
+int MovimientosDisponibles(GAME *Juego,int size);
+void RealizarMovimiento(GAME *Juego,int size);
+COORD ObtenerCoordenadas(GAME Juego,int size);
+void LimpiarTablero(GAME * Juego,int size);
+int EndGame(GAME Juego,int size);
+COORD Puntos(GAME Juego,int size);
 
 #endif /* FUNCIONESREVERSI_H_ */
