@@ -1,18 +1,20 @@
-#include"FuncionesReversi.h"
-#include <stdlib.h>
+#include "FuncionesReversi.h"
 #include <stdio.h>
 
 GAME IniciarTablero(int size){
+    //Crear espacios de memoria para el tablero
     GAME juego;
     juego.tablero=malloc(size * sizeof(char*));
     for (int i = 0; i < size; ++i) {
-        juego.tablero[i] = malloc(size* sizeof(char));
+        juego.tablero[i] = malloc(size * sizeof(char));
     }
+    //Llenando el tablero de 0s
     for (int y = 0; y < size; ++y) {
         for (int x = 0; x < size; ++x) {
             juego.tablero[y][x] = '0';
         }
     }
+    //seteando las fichas del centro
     juego.tablero[size/2 -1][size/2 - 1] = 'B';
     juego.tablero[size/2][size/2] = 'B';
     juego.tablero[size/2 -1][size/2] = 'W';
@@ -23,6 +25,7 @@ GAME IniciarTablero(int size){
 }
 
 void MostrarTablero(GAME Juego,int size) {
+    //Se documenta sola
     int numero_fila =0;
     int numero_col = 0;
     for (int columna = 0; columna < size; columna++) {
@@ -52,29 +55,37 @@ int MovimientosDisponibles(GAME *Juego,int size) {
     EscogerTurnoJugador(Juego);
     for (int y = 0; y < size; ++y) {
         for (int x = 0; x < size; ++x) {
+            //Recorriendo el tablero a ver si la casilla actual es disponible para jugada
             if (Juego->tablero[y][x] != '0') {
                 continue;
             }
+            //Si encontramos casilla vacia vamos a verificar si es posible
             for (int AdyacentesEnY = -1; AdyacentesEnY < 2; ++AdyacentesEnY) {
                 for (int AdyacentesEnX = -1; AdyacentesEnX < 2; ++AdyacentesEnX) {
+                    //Checo alrededores para saber si hay algun jugador cercas
                     if ((y + AdyacentesEnY) < 0 || (y + AdyacentesEnY) == size || (x + AdyacentesEnX) < 0 ||
                         (x + AdyacentesEnX) == size
                         || (AdyacentesEnY == 0 && AdyacentesEnX == 0)) {
                         continue;
                     }
+                    //Si encontre un jugador debe ser un oponente
                     if (Juego->tablero[y + AdyacentesEnY][x + AdyacentesEnX] == Juego->Oponente) {
                         int MovimientoEnX = x + AdyacentesEnX;
                         int MovimientoEnY = y + AdyacentesEnY;
+                        //Si era un oponente, ahora voy a recorrer en esa direccion
                         while (1) {
                             MovimientoEnX += AdyacentesEnX;
                             MovimientoEnY += AdyacentesEnY;
-                            if (Juego->tablero[MovimientoEnY][MovimientoEnX] == '0'){
-                                break;
-                            }
+                            //Si me salgo del tablero enconces no es posible
                             if (MovimientoEnX < 0 || MovimientoEnX >= size || MovimientoEnY < 0 ||
                                 MovimientoEnY >= size) {
                                 break;
                             }
+                            //Si al terminar el recorrido esta vacio no es disponible
+                            if (Juego->tablero[MovimientoEnY][MovimientoEnX] == '0'){
+                                break;
+                            }
+                            //Si al terminar el recorrido encuentro una ficha mia entonces esta disponible
                             if (Juego->tablero[MovimientoEnY][MovimientoEnX] == Juego->JugadorActual) {
                                 Juego->tablero[y][x] = 'A';
                                 CasillasDisponibles++;
@@ -91,34 +102,41 @@ int MovimientosDisponibles(GAME *Juego,int size) {
 
 void RealizarMovimiento(GAME *Juego,int size) {
     EscogerTurnoJugador(Juego);
+    //Verificar si el jugador actual tiene jugadas disponibles
     if (MovimientosDisponibles(Juego,size)){
+        //Conseguir una coordenada valida y transformarla
         COORD coordenadas = ObtenerCoordenadas(*Juego,size);
         Juego->tablero[coordenadas.y][coordenadas.x] = Juego->JugadorActual;
         Juego->turno++;
+        //Ver hasta donde se hara y en que direcciones si y en cuales no
         for (int AdyacentesEnY = -1; AdyacentesEnY <= 1; AdyacentesEnY++){
             for(int  AdyacentesEnX = -1; AdyacentesEnX <= 1; AdyacentesEnX++){
+                //Verificando si a los alrededores se puede evaluar
                 if (coordenadas.y + AdyacentesEnY < 0 || coordenadas.y + AdyacentesEnY == size || coordenadas.x + AdyacentesEnX < 0
                     || coordenadas.x + AdyacentesEnX == size || (AdyacentesEnX == 0 && AdyacentesEnY == 0)){
                     continue;
                 }
+                //Si encuentro una ficha enemiga medire hasta donde puedo hacer captura
                 if (Juego->tablero[coordenadas.y + AdyacentesEnY][coordenadas.x + AdyacentesEnX] == Juego->Oponente){
                     int MovimientoEnX = coordenadas.x;
                     int MovimientoEnY = coordenadas.y;
                     while (1){
+                        //Me muevo en la dirección en la que encontre un oponente
                         MovimientoEnY += AdyacentesEnY;
                         MovimientoEnX += AdyacentesEnX;
-                        //printf("MovimientoEnX = %d , MovimientoEnY = %d \n", MovimientoEnX, MovimientoEnY);
+                        //Checo que no llegue a un espacio no valido de memoria
                         if (MovimientoEnX < 0 || MovimientoEnX >= size || MovimientoEnY < 0 || MovimientoEnY >= size){
                             break;
                         }
+                        //Checo que no me lleve a un espacio vacio
                         if (Juego->tablero[MovimientoEnY][MovimientoEnX] == '0'){
                             break;
                         }
-                        if (Juego->tablero[MovimientoEnY][MovimientoEnX] == Juego->JugadorActual){
-                            //quiza aqui esta el error ---------------------------------------------------------------------------------------------------------------------
-                            //creo que falta implementar que se cambie el valor si esta entre dos---------------------------------------------------------------------------
-
-                            while (Juego->tablero[MovimientoEnY -= AdyacentesEnY][MovimientoEnX -= AdyacentesEnX] == Juego->Oponente){
+                        //Si encuentro una ficha mia enconces me movere de regreso, hasta llegar a la ubicacion
+                        //De la ficha que acabo de agregar
+                        if (Juego->tablero[MovimientoEnY][MovimientoEnX] == Juego->JugadorActual) {
+                            while (Juego->tablero[MovimientoEnY -= AdyacentesEnY][MovimientoEnX -= AdyacentesEnX] ==
+                                   Juego->Oponente) {
                                 Juego->tablero[MovimientoEnY][MovimientoEnX] = Juego->JugadorActual;
                             }
                             break;
@@ -135,6 +153,7 @@ void RealizarMovimiento(GAME *Juego,int size) {
 }
 
 void LimpiarTablero(GAME * Juego,int size){
+    //Borrar As del mapa
     for (int y = 0; y < size; ++y) {
         for (int x = 0; x < size; x++) {
             if (Juego->tablero[y][x] == 'A'){
@@ -145,6 +164,7 @@ void LimpiarTablero(GAME * Juego,int size){
 }
 
 void EscogerTurnoJugador(GAME *Juego){
+    //Se determina quien es el jugador actual dependiendo del turno en que vayan, empieza siempre B
     if (Juego->turno % 2 != 0) {
         Juego->JugadorActual = 'B';
         Juego->Oponente = 'W';
@@ -166,12 +186,14 @@ COORD ObtenerCoordenadas(GAME Juego,int size){
     printf("\n");
     while(1) {
         while (1) {
+            //Se pide que sean números dentro del tablero
             printf("\nIngrese cordenadas de una jugada posible x, y\n");
             scanf("%d, %d", &x, &y);
             if (x >= 0 && x < size && y >= 0 && y < size) {
                 break;
             }
         }
+        //Si esta dentro del tablero, debe ser una A sino no es valido
         if (Juego.tablero[y][x] == 'A') {
             break;
         }
@@ -181,7 +203,8 @@ COORD ObtenerCoordenadas(GAME Juego,int size){
     return coordenada;
 }
 
-int EndGame(GAME Juego,int size){
+int EndGame(GAME Juego, int size){
+    //El juego termina si: No hay más espacios o si ningun jugador tiene movimientos posibles
     int CasillasLibres = 0;
     for (int y = 0; y < size; y++){
         for (int x = 0; x < size; x++){
@@ -190,13 +213,16 @@ int EndGame(GAME Juego,int size){
             }
         }
     }
-    int JugadasTurnoActual = MovimientosDisponibles(&Juego,size);
+    int JugadasTurnoActual = MovimientosDisponibles(&Juego, size);
     Juego.turno++;
-    int  JugadasTurnoSiguiente = MovimientosDisponibles(&Juego,size);
+    LimpiarTablero(&Juego, size);
+    int  JugadasTurnoSiguiente = MovimientosDisponibles(&Juego, size);
+    LimpiarTablero(&Juego, size);
     return (CasillasLibres && (JugadasTurnoActual || JugadasTurnoSiguiente));
 }
 
 COORD Puntos(GAME Juego,int size){
+    //Recorrer el tablero contando fichas de ambos colores
     COORD Puntos;
     int CantidadB = 0;
     int CantidadW = 0;
