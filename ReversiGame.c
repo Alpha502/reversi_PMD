@@ -1,9 +1,10 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include "FuncionesReversi.c"
+#include "Graph.h"
+#include "FuncionesReversi.h"
 
 
 int main() {
+
     char opcion = 0;
     int size;
     setbuf(stdin, NULL);
@@ -18,22 +19,31 @@ int main() {
     printf("\n");
 
     GAME juego = IniciarTablero(size);
-
-    do {
+    InitWindow(1000, 650, "INFINIREVERSI");
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        StartBoard(size);
+        DrawTokens(juego, size);
+        AddText(juego, size);
+        EndDrawing();
+/*
         do {
-            MostrarTablero(juego,size);
-            MovimientosDisponibles(&juego,size);
-            printf("\n");
-            MostrarTablero(juego,size);
-            RealizarMovimiento(&juego,size);
-            LimpiarTablero(&juego,size);
-        }while (EndGame(juego,size));
+            while (EndGame(juego, size)) {
+                MostrarTablero(juego, size);
+                MovimientosDisponibles(&juego, size);
+                printf("\n");
+                MostrarTablero(juego, size);
+                RealizarMovimiento(&juego, size);
+                LimpiarTablero(&juego, size);
+            }
 
-        printf("volver a jugar?\n");
-        scanf("%c", &opcion);
-    }while(opcion == 's');
+            printf("volver a jugar?\n");
+            scanf("%c", &opcion);
+        } while (opcion == 's');
 
-    free(juego.tablero);
+        free(juego.tablero);
 
+*/    }
+    CloseWindow();
     return 0;
 }
