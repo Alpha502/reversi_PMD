@@ -22,7 +22,7 @@ GAME IniciarTablero(int size);
 void MostrarTablero(GAME Juego, int size);
 void EscogerTurnoJugador(GAME *Juego);
 int MovimientosDisponibles(GAME *Juego,int size);
-void RealizarMovimiento(GAME *Juego,int size);
+void RealizarMovimiento(GAME *Juego,int size, int x, int y);
 COORD ObtenerCoordenadas(GAME Juego,int size);
 void LimpiarTablero(GAME * Juego,int size);
 int EndGame(GAME Juego,int size);

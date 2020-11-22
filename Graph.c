@@ -1,4 +1,3 @@
-#include "raylib.h"
 #include "Graph.h"
 
 COORD Distancias(int size){
@@ -7,6 +6,7 @@ COORD Distancias(int size){
     Distances.y = 550/size;
     return Distances;
 }
+
 void StartBoard(int size) {
     ClearBackground(BLUE);
     DrawRectangle(50, 50, 700, 550, GREEN);
@@ -31,6 +31,7 @@ void StartBoard(int size) {
         }
     }
 }
+
 void DrawTokens(GAME Juego, int size){
     COORD Distances = Distancias(size);
     int PosicionEnLaColumna = (50 + 50 + Distances.y)/2;
@@ -44,7 +45,7 @@ void DrawTokens(GAME Juego, int size){
                 DrawCircle(PosicionEnLaFila, PosicionEnLaColumna, Distances.x/3, WHITE);
             }
             if (Juego.tablero[y][x] == 'A'){
-                DrawCircle(PosicionEnLaFila, PosicionEnLaColumna, Distances.x/3, LIGHTGRAY);
+                DrawCircle(PosicionEnLaFila, PosicionEnLaColumna, Distances.x/3, ORANGE);
             }
             PosicionEnLaFila += Distances.x;
         }
@@ -53,12 +54,92 @@ void DrawTokens(GAME Juego, int size){
 }
 
 void AddText(GAME Juego, int size){
+    if(Juego.turno%2 != 0){
+        DrawText("Turno del Jugador Negro", 770, 500, 15, BLACK);
+    }
+    else{
+        DrawText("Turno del Jugador Blanco", 770, 500, 15, BLACK);
+    };
     DrawText("INFINIREVERSI", GetScreenWidth()/2 -150, 10, 20, BLACK);
     DrawText("MARCADOR", 800, 100, 20, BLACK);
     COORD points = Puntos(Juego, size);
-    DrawText("Puntos jugador Blanco", 800, 200, 15, BLACK);
-    DrawText(TextFormat("%i", points.y), 800, 250, 60, BLACK);
-    DrawText("Puntos Jugador Negro", 800, 400, 15, BLACK);
-    DrawText(TextFormat("%i", points.x), 800, 450, 60, BLACK);
+    DrawText("Puntos jugador Blanco", 800, 150, 15, BLACK);
+    DrawText(TextFormat("%i", points.y), 800, 200, 60, BLACK);
+    DrawText("Puntos Jugador Negro", 800, 350, 15, BLACK);
+    DrawText(TextFormat("%i", points.x), 800, 400, 60, BLACK);
+
+}
+
+void DrawOption(int x, int y, int tam){
+    COORD distance = Distancias(tam);
+    DrawCircle(x, y, distance.x/3, RED);
+}
+
+int DrawSizeWindow(){
+    InitWindow(600, 500, "Tamaño");
+    SetTargetFPS(30);
+    int tamanio = 8;
+    while (!WindowShouldClose()){
+        if(IsKeyPressed(KEY_RIGHT) && tamanio != 50){
+            tamanio += 2;
+        }
+        if(IsKeyPressed(KEY_LEFT) && tamanio != 6){
+            tamanio -= 2;
+        }
+        if(IsKeyPressed(KEY_ENTER)){
+            CloseWindow();
+        }
+
+        BeginDrawing();
+        ClearBackground(BLUE);
+        DrawText(TextFormat("El tamaño del tablero sera: %i x %i", tamanio, tamanio), 160, 250, 20, BLACK);
+        EndDrawing();
+    }
+    return tamanio;
+}
+
+void DrawGame(GAME Juego, int tam){
+    InitWindow(1000, 650, "INFINIREVERSI");
+    SetTargetFPS(30);
+
+
+    COORD distance = Distancias(tam);
+    COORD PosicionMatriz;
+    PosicionMatriz.x = 0;
+    PosicionMatriz.y = 0;
+    int PosicionEnLaColumna = (50 + 50 + distance.y)/2;
+    int PosicionEnLaFila = (50 + 50 + distance.x)/2;
+
+    while (!WindowShouldClose()) {
+        MovimientosDisponibles(&Juego, tam);
+        if (IsKeyPressed(KEY_DOWN) && PosicionMatriz.y != tam-1){
+            PosicionEnLaColumna += distance.y;
+            PosicionMatriz.y++;
+        }
+        if (IsKeyPressed(KEY_UP) && PosicionMatriz.y != 0){
+            PosicionEnLaColumna -= distance.y;
+            PosicionMatriz.y--;
+        }
+        if (IsKeyPressed(KEY_RIGHT) && PosicionMatriz.x != tam-1){
+            PosicionEnLaFila += distance.x;
+            PosicionMatriz.x++;
+        }
+        if (IsKeyPressed(KEY_LEFT) && PosicionMatriz.x != 0){
+            PosicionEnLaFila -= distance.x;
+            PosicionMatriz.x--;
+        }
+        if (IsKeyPressed(KEY_ENTER) && Juego.tablero[PosicionMatriz.y][PosicionMatriz.x] == 'A'){
+            RealizarMovimiento(&Juego, tam, PosicionMatriz.x, PosicionMatriz.y);
+            LimpiarTablero(&Juego, tam);
+        }
+
+        BeginDrawing();
+        StartBoard(tam);
+        DrawTokens(Juego, tam);
+        DrawOption(PosicionEnLaFila, PosicionEnLaColumna, tam);
+        AddText(Juego, tam);
+        EndDrawing();
+    }
+    CloseWindow();
 }
 

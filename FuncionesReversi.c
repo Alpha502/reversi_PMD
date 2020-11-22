@@ -1,5 +1,8 @@
 #include "FuncionesReversi.h"
 #include <stdio.h>
+#include "raylib.h"
+
+
 
 GAME IniciarTablero(int size){
     //Crear espacios de memoria para el tablero
@@ -100,26 +103,25 @@ int MovimientosDisponibles(GAME *Juego,int size) {
     return CasillasDisponibles;
 }
 
-void RealizarMovimiento(GAME *Juego,int size) {
+void RealizarMovimiento(GAME *Juego,int size, int x, int y) {
     EscogerTurnoJugador(Juego);
     //Verificar si el jugador actual tiene jugadas disponibles
     if (MovimientosDisponibles(Juego,size)){
         //Conseguir una coordenada valida y transformarla
-        COORD coordenadas = ObtenerCoordenadas(*Juego,size);
-        Juego->tablero[coordenadas.y][coordenadas.x] = Juego->JugadorActual;
+        Juego->tablero[y][x] = Juego->JugadorActual;
         Juego->turno++;
         //Ver hasta donde se hara y en que direcciones si y en cuales no
         for (int AdyacentesEnY = -1; AdyacentesEnY <= 1; AdyacentesEnY++){
             for(int  AdyacentesEnX = -1; AdyacentesEnX <= 1; AdyacentesEnX++){
                 //Verificando si a los alrededores se puede evaluar
-                if (coordenadas.y + AdyacentesEnY < 0 || coordenadas.y + AdyacentesEnY == size || coordenadas.x + AdyacentesEnX < 0
-                    || coordenadas.x + AdyacentesEnX == size || (AdyacentesEnX == 0 && AdyacentesEnY == 0)){
+                if (y + AdyacentesEnY < 0 || y + AdyacentesEnY == size || x + AdyacentesEnX < 0
+                    || x + AdyacentesEnX == size || (AdyacentesEnX == 0 && AdyacentesEnY == 0)){
                     continue;
                 }
                 //Si encuentro una ficha enemiga medire hasta donde puedo hacer captura
-                if (Juego->tablero[coordenadas.y + AdyacentesEnY][coordenadas.x + AdyacentesEnX] == Juego->Oponente){
-                    int MovimientoEnX = coordenadas.x;
-                    int MovimientoEnY = coordenadas.y;
+                if (Juego->tablero[y + AdyacentesEnY][x + AdyacentesEnX] == Juego->Oponente){
+                    int MovimientoEnX = x;
+                    int MovimientoEnY = y;
                     while (1){
                         //Me muevo en la dirección en la que encontre un oponente
                         MovimientoEnY += AdyacentesEnY;
