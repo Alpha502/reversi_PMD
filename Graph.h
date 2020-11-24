@@ -5,12 +5,11 @@
 #ifndef REVERSI_GRAPH_H
 #define REVERSI_GRAPH_H
 
-int DrawSizeWindow();
 void StartBoard(int size);
 void AddText(GAME Juego, int size);
 void DrawTokens(GAME Juego, int size);
 COORD Distancias(int size);
-void DrawGame(GAME Juego, int tam);
+void DrawGame();
 void DrawOption(int x, int y, int tam);
 
 

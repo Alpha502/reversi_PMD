@@ -1,6 +1,5 @@
 #include "FuncionesReversi.h"
 #include <stdio.h>
-#include "raylib.h"
 
 
 

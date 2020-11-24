@@ -3,10 +3,7 @@
 
 
 int main() {
-    int size = 8;
-    GAME juego = IniciarTablero(size);
-    DrawGame(juego, size);
-    free(juego.tablero);
 
+    DrawGame();
     return 0;
 }
