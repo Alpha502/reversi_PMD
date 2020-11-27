@@ -11,6 +11,7 @@ void AddText(GAME Juego, int size);
 void DrawTokens(GAME Juego, int size);
 COORD Distancias(int size);
 void DrawGame();
+void DrawRival(int Rival);
 void DrawOption(int x, int y, int tam);
 
 
