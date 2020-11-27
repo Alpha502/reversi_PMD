@@ -1,4 +1,6 @@
 #include "Graph.h"
+#include "iaminimax.c"
+#include <stdlib.h>
 
 COORD Distancias(int size){
     //Obtiene una distancia usada para medir las casillas del tablero de tamaño constante
@@ -91,7 +93,6 @@ void DrawOption(int x, int y, int tam){
     DrawCircle(x, y, distance.x/3, RED);
 }
 
-
 void DrawGame(){
     //Se inicializa la pantalla
     InitWindow(1000, 650, "INFINIREVERSI");
@@ -133,29 +134,90 @@ void DrawGame(){
         }
         if(WindowNo == 1) {
             //Si hay movimientos disponibles de juega con las fechas del teclado moviendose por la matriz y la pantalla
-            MovimientosDisponibles(&Juego, tam);
-            if (IsKeyPressed(KEY_DOWN) && PosicionMatriz.y != tam - 1) {
-                PosicionEnLaColumna += distance.y;
-                PosicionMatriz.y++;
+            //si le toca al usuario:
+            if (Juego.turno % 2 != 0){
+                MovimientosDisponibles(&Juego, tam);
+                if (IsKeyPressed(KEY_DOWN) && PosicionMatriz.y != tam - 1) {
+                    PosicionEnLaColumna += distance.y;
+                    PosicionMatriz.y++;
+                }
+                if (IsKeyPressed(KEY_UP) && PosicionMatriz.y != 0) {
+                    PosicionEnLaColumna -= distance.y;
+                    PosicionMatriz.y--;
+                }
+                if (IsKeyPressed(KEY_RIGHT) && PosicionMatriz.x != tam - 1) {
+                    PosicionEnLaFila += distance.x;
+                    PosicionMatriz.x++;
+                }
+                if (IsKeyPressed(KEY_LEFT) && PosicionMatriz.x != 0) {
+                    PosicionEnLaFila -= distance.x;
+                    PosicionMatriz.x--;
+                }
+                //Cuando se presione enter se realiza un movimiento en la matriz y se ve reflejado en pantalla con el cambio de color
+                if (IsKeyPressed(KEY_ENTER) && Juego.tablero[PosicionMatriz.y][PosicionMatriz.x] == 'A') {
+                    RealizarMovimiento(&Juego, tam, PosicionMatriz.x, PosicionMatriz.y);
+                    LimpiarTablero(&Juego, tam);
+                }
+            }else{
+                //turno de la computadora
+                //veo los movimientos validos para blanco (IA)
+                MovimientosDisponibles(&Juego,tam);
+                int mejorpuntuacion = 0;
+                COORD mejormovida;
+                //se crea una copia del tablero para no modificar el original
+                //se le reserva memoria igual que al original
+                GAME Copia;
+                Copia.tablero=malloc(tam * sizeof(char*));
+                for (int i = 0; i < tam; ++i) {
+                    Copia.tablero[i] = malloc(tam * sizeof(char));
+                }
+                //se copian los valores del tablero original
+                for (int y = 0; y < tam; y++) {
+                    for (int x = 0; x < tam; x++) {
+                        Copia.tablero[y][x]=Juego.tablero[y][x];
+                    }
+                }
+                //se copian las demas caracteristicas del tablero
+                Copia.turno=Juego.turno;
+                Copia.JugadorActual= Juego.JugadorActual;
+                Copia.Oponente=Juego.Oponente;
+                //aqui se recorre el tablero del juego, si se encuentra una A (posibe movimiento de la IA
+                //entonces se llama a minimax para que se ejecute y calcule es puntaje mas alto
+                for (int y = 0; y < tam; y++) {
+                    for (int x = 0; x < tam; x++) {
+                        if (Juego.tablero[y][x] == 'A') {
+                            //se realiza el movimiento a uno de los movimientos posibles
+                            RealizarMovimiento(&Copia,tam,x,y);
+                            /*
+                             *
+                             *
+                             * IMPORTANTE LO DE ABAJO
+                             * FALSE=IA
+                             * TRUE=HUMANO
+                             *
+                             */
+                            //se llama a minimax, false indica que es la computadora
+                            int puntuacion = minimax(Copia,0, false, tam);
+                            Copia.turno--;
+                            Copia.tablero[y][x]='A';
+                            //se regresa el estado del tablero a como estaba antes de hacer el calculo de
+                            //ese movimiento
+                            //si la puntuacion (minimax en esa posicion) es mayor que mejor puntuacion
+                            //mejor puntuacion al inicio es 0 entonces el primer movimiento siempre será mejor
+                            if (puntuacion > mejorpuntuacion) {
+                                mejorpuntuacion = puntuacion;
+                                mejormovida.x = x;
+                                mejormovida.y = y;
+                                //se guardan las coordenadas
+                            }
+                        }
+                    }
+                }
+                //se limpia el tablero y se realiza el movimiento en las mejores coordenadas (mayor puntuacion)
+                LimpiarTablero(&Juego,tam);
+                RealizarMovimiento(&Juego,tam,mejormovida.x,mejormovida.y);
+                LimpiarTablero(&Juego,tam);
             }
-            if (IsKeyPressed(KEY_UP) && PosicionMatriz.y != 0) {
-                PosicionEnLaColumna -= distance.y;
-                PosicionMatriz.y--;
-            }
-            if (IsKeyPressed(KEY_RIGHT) && PosicionMatriz.x != tam - 1) {
-                PosicionEnLaFila += distance.x;
-                PosicionMatriz.x++;
-            }
-            if (IsKeyPressed(KEY_LEFT) && PosicionMatriz.x != 0) {
-                PosicionEnLaFila -= distance.x;
-                PosicionMatriz.x--;
-            }
-            //Cuando se presione enter se realiza un movimiento en la matriz y se ve reflejado en pantalla con el cambio de color
-            if (IsKeyPressed(KEY_ENTER) && Juego.tablero[PosicionMatriz.y][PosicionMatriz.x] == 'A') {
-                RealizarMovimiento(&Juego, tam, PosicionMatriz.x, PosicionMatriz.y);
-                LimpiarTablero(&Juego, tam);
-            }
-
             BeginDrawing();
             StartBoard(tam);
             DrawTokens(Juego, tam);
@@ -163,6 +225,7 @@ void DrawGame(){
             AddText(Juego, tam);
             EndDrawing();
         }
+
     }
     CloseWindow();
     free(Juego.tablero);

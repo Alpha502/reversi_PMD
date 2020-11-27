@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "FuncionesReversi.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 #ifndef REVERSI_GRAPH_H
 #define REVERSI_GRAPH_H
