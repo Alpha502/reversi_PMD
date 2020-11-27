@@ -209,17 +209,28 @@ int EndGame(GAME Juego, int size){
     int CasillasLibres = 0;
     for (int y = 0; y < size; y++){
         for (int x = 0; x < size; x++){
-            if(Juego.tablero[y][x] == '0'){
+            if(Juego.tablero[y][x] == '0'||Juego.tablero[y][x] == 'A'){
                 CasillasLibres++;
             }
         }
     }
-    int JugadasTurnoActual = MovimientosDisponibles(&Juego, size);
     Juego.turno++;
-    LimpiarTablero(&Juego, size);
-    int  JugadasTurnoSiguiente = MovimientosDisponibles(&Juego, size);
-    LimpiarTablero(&Juego, size);
-    return (CasillasLibres && (JugadasTurnoActual || JugadasTurnoSiguiente));
+    MovimientosDisponibles(&Juego, size);
+    int movimientosdisponibles1 = 0;
+    for (int y = 0; y < size; y++){
+        for (int x = 0; x < size; x++){
+            if(Juego.tablero[y][x] == 'A'){
+                movimientosdisponibles1++;
+            }
+        }
+    }
+    Juego.turno--;
+    LimpiarTablero(&Juego,size);
+    if(CasillasLibres>0 || movimientosdisponibles1 >0)
+        return 1;
+    else
+        return 0;
+
 }
 
 COORD Puntos(GAME Juego,int size){

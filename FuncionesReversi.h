@@ -12,6 +12,7 @@ struct GameState{
     char Oponente;
 };
 typedef  struct GameState GAME;
+
 struct coord{
     int x;
     int y;

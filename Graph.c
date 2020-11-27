@@ -66,7 +66,10 @@ void DrawTokens(GAME Juego, int size){
 
 void AddText(GAME Juego, int size){
     //Se dibuja en pantalla el turno y los puntos de cada jugador
-    if(Juego.turno%2 != 0){
+    int jeugo = EndGame(Juego, size);
+    if (jeugo==0) {
+        DrawText("El juego ha terminado!!", 770, 500, 15, BLACK);
+    }else if(Juego.turno%2 != 0){
         DrawText("Turno del Jugador Negro", 770, 500, 15, BLACK);
     }
     else{
