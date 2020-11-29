@@ -1,5 +1,5 @@
-#include "Graph.c"
-#include "FuncionesReversi.c"
+#include "Graph.h"
+#include "FuncionesReversi.h"
 
 int main() {
     DrawGame();
