@@ -1,0 +1,61 @@
+InfiniReversi
+
+Estructuras
+//Contiene los datos de la partida//
+struct GameState{
+    char** tablero;
+    int turno;
+    char JugadorActual;
+    char Oponente;
+};
+//Posición en el tablero//
+struct coord{
+    int x;
+    int y;
+};
+
+Funciones
+//Regresa un tablero de tamaño size * size//
+GAME IniciarTablero(int size);
+
+//Muesta en consola el tablero//
+void MostrarTablero(GAME Juego, int size);
+
+//Cambia los valores de Jugador Actual y Oponente dentro de la estructura//
+void EscogerTurnoJugador(GAME *Juego);
+
+//Indica en el tablero las casillas donde puede realizarse un movimiento dependiendo el turno y regresa la cantidad de jugadas disponibles//
+int MovimientosDisponibles(GAME *Juego,int size);
+
+//Realiza la insersion de una ficha en el tablero//
+void RealizarMovimiento(GAME *Juego,int size, int x, int y);
+
+//Solicitda por terminal un punto valido en el tablero donde haya espacio disponible//
+COORD ObtenerCoordenadas(GAME Juego,int size);
+
+//Remueve el indicador de las casillas disponibles del jugador//
+void LimpiarTablero(GAME * Juego,int size);
+
+//Verifica que el juego puede continuar//
+int EndGame(GAME Juego,int size);
+
+//Obtiene la cantidad de elementos de cada jugador en el tablero//
+COORD Puntos(GAME Juego,int size);
+
+//Traza los dibujos de un tablero de tamaño size * size//
+void StartBoard(int size);
+
+//Dibuja en pantalla los puntos por jugador y el turno en cuestion//
+void AddText(GAME Juego, int size);
+
+//Dibuja en pantalla las fichas sobre el tablero//
+void DrawTokens(GAME Juego, int size);
+
+//Retorna el espacio en pixeles que hay entre casilla y casilla dependiendo el tamaño dado//
+COORD Distancias(int size);
+
+//Es el funcionamiento del juego en general, lo actualiza y lo dibuja en pantalla//
+void DrawGame(GAME Juego, int tam);
+
+//Dibuja la poscición del usuario en pantalla//
+void DrawOption(int x, int y, int tam);
