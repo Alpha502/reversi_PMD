@@ -69,8 +69,20 @@ void DrawTokens(GAME Juego, int size){
 void AddText(GAME Juego, int size){
     //Se dibuja en pantalla el turno y los puntos de cada jugador
     int jeugo = EndGame(Juego, size);
+    int mov_disponibles=0;
     if (jeugo==0) {
-        DrawText("El juego ha terminado!!", 770, 500, 15, BLACK);
+        MovimientosDisponibles(&Juego,size);
+        for (int i = 0; i<size;++i){
+            for (int j = 0; j < size; ++j) {
+                if (Juego.tablero[i][j]=='A'){
+                    mov_disponibles++;
+                }
+            }
+        }
+        LimpiarTablero(&Juego,size);
+        if (mov_disponibles==0){
+            DrawText("El juego ha terminado!!", 770, 500, 15, BLACK);
+        }
     }else if(Juego.turno%2 != 0){
         DrawText("Turno del Jugador Negro", 770, 500, 15, BLACK);
     }
