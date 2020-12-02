@@ -149,7 +149,7 @@ void DrawGame(){
         }
         //La ventana 1 determina el tamaño del juego con las felchas siendo este un numero par y tablero cuadrado
         if (WindowNo == 1) {
-            if (IsKeyPressed(KEY_RIGHT) && tam != 50) {
+            if (IsKeyPressed(KEY_RIGHT) && tam != 150) {
                 tam += 2;
             }
             if (IsKeyPressed(KEY_LEFT) && tam != 6) {
